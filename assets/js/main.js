@@ -25,13 +25,16 @@ function randomNumber(min, max) {
 
 const gridHtml = document.getElementById('griglia');
 const playButtonHtml = document.getElementById('play-button');
+const overlay = document.createElement('div');
 let gameOver = false;
 let points = 0;
+
+overlay.className = 'overlay';
 
 // funzione che crea e restituisce una cella (elemento div con classe "cell")
 function createCell(difficulty, arrayBombs, howManyCells) {
     const cell = document.createElement('div');
-    
+
     cell.classList.add('cell');
 
 
@@ -48,21 +51,30 @@ function createCell(difficulty, arrayBombs, howManyCells) {
             break;
     }
 
-    cell.addEventListener('click', function(){
+    cell.addEventListener('click', function () {
+        // se la partita non è terminata..
         if (!gameOver) {
-            if(!arrayBombs.includes(Number(this.querySelector('span').innerText))){
-                this.classList.toggle('active');
-                points++;
-                console.log(this.querySelector('span').innerText);
-                console.log(`Points: ${points}`);
+            // se la cella cliccata NON è una bomba..
+            if (!arrayBombs.includes(Number(this.querySelector('span').innerText))) {
+                this.classList.toggle('active');    // la coloro di blu
+                points++;   // incremento il punteggio
+                console.log(this.querySelector('span').innerText);  // stampo in conosle il numero che contiene
+                console.log(`Points: ${points}`);   // stampo in console il punteggio aggiornato
+                // se viene raggiunto il punteggio massimo..
                 if (points === howManyCells - arrayBombs.length) {
-                    gameOver = true;
-                    console.log('Hai vinto!');
+                    gameOver = true;    // la partita termina
+                    console.log('Hai vinto!');  //  stampo in console il messaggio di vittoria
+                    overlay.classList.add('overlay-win');
+                    overlay.innerHTML = `<span>Hai vinto!<br>Punteggio: ${points}</span>`;
+                    gridHtml.append(overlay);
                 }
-            } else {
-                this.classList.toggle('danger');
-                gameOver = true;
-                console.log(this.querySelector('span').innerText, "Bomba!");
+            } else {    // altrimenti se la cella cliccata è una bomba..
+                this.classList.toggle('danger');    // coloro la cella di rosso
+                gameOver = true;    // termino la partita
+                console.log(this.querySelector('span').innerText, "Bomba!");    // stampo in console il messaggio di sconfitta a causa dell'esplosione di una bomba
+                overlay.classList.add('overlay-lose');
+                overlay.innerHTML = `<span>Hai perso!<br>Punteggio: ${points}</span>`;
+                gridHtml.append(overlay);
             }
         }
     });
@@ -79,7 +91,7 @@ function bombsGenerator(n) {
 
     while (bombs.length < 16) {
         x = randomNumber(1, n);
-        if(!bombs.includes(x)){
+        if (!bombs.includes(x)) {
             bombs.push(x);
         }
     }
@@ -88,7 +100,7 @@ function bombsGenerator(n) {
 }
 
 // al click del bottone play viene generata la griglia di 100 celle
-playButtonHtml.addEventListener('click', function(){
+playButtonHtml.addEventListener('click', function () {
     const mode = document.getElementById('game-mode');
     let howManyCells = 0;
     let bombs = [];
@@ -119,17 +131,17 @@ playButtonHtml.addEventListener('click', function(){
 
     // se non è ancora stata generata alcuna griglia..
     if (gridHtml.querySelectorAll('div').length === 0) {
-        for(let i = 0; i < howManyCells; i++) {
+        for (let i = 0; i < howManyCells; i++) {
             const cell = createCell(mode.value, bombs, howManyCells);
             const number = document.createElement('span');
-    
-            number.innerText = i+1;
-    
+
+            number.innerText = i + 1;
+
             cell.append(number);
-    
+
             gridHtml.append(cell);
         }
     }
-    
+
 
 });
