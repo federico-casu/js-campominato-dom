@@ -26,7 +26,7 @@ function randomNumber(min, max) {
 const gridHtml = document.getElementById('griglia');
 const playButtonHtml = document.getElementById('play-button');
 const overlay = document.createElement('div');
-let gameOver = false;
+// let gameOver = false;
 let points = 0;
 
 overlay.className = 'overlay';
@@ -53,7 +53,7 @@ function createCell(difficulty, arrayBombs, howManyCells) {
 
     cell.addEventListener('click', function () {
         // se la partita non è terminata..
-        if (!gameOver) {
+        //if (!gameOver) {
             // se la cella cliccata NON è una bomba..
             if (!arrayBombs.includes(Number(this.querySelector('span').innerText))) {
                 this.classList.toggle('active');    // la coloro di blu
@@ -62,22 +62,22 @@ function createCell(difficulty, arrayBombs, howManyCells) {
                 console.log(`Points: ${points}`);   // stampo in console il punteggio aggiornato
                 // se viene raggiunto il punteggio massimo..
                 if (points === howManyCells - arrayBombs.length) {
-                    gameOver = true;    // la partita termina
+                    //gameOver = true;    // la partita termina
                     console.log('Hai vinto!');  //  stampo in console il messaggio di vittoria
                     overlay.classList.add('overlay-win');
-                    overlay.innerHTML = `<span>You win!<br>Points: ${points}</span><br><a href="http://127.0.0.1:5500/">Try again</a>`;
+                    overlay.innerHTML = `<span>You win!<br>Points: ${points}<br><a href="http://127.0.0.1:5500/">Try again</a></span>`;
                     gridHtml.append(overlay);
                 }
             } else {    // altrimenti se la cella cliccata è una bomba..
                 this.classList.toggle('danger');    // coloro la cella di rosso
-                gameOver = true;    // termino la partita
+                //gameOver = true;    // termino la partita
                 console.log(this.querySelector('span').innerText, "Bomba!");    // stampo in console il messaggio di sconfitta a causa dell'esplosione di una bomba
                 // aggiungo un overlay che mostra il messaggio di sconfitta ed il punteggio
                 overlay.classList.add('overlay-lose');
                 overlay.innerHTML = `<span>You lose!<br>Points: ${points}<br><a href="http://127.0.0.1:5500/">Try again</a></span>`;
                 gridHtml.append(overlay);
             }
-        }
+        //}
     });
 
     return cell;
@@ -106,7 +106,7 @@ playButtonHtml.addEventListener('click', function () {
     let howManyCells = 0;
     let bombs = [];
 
-    gameOver = false;
+    // gameOver = false;
     points = 0;
 
     gridHtml.innerHTML = '';
