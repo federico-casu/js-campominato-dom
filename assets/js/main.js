@@ -65,15 +65,16 @@ function createCell(difficulty, arrayBombs, howManyCells) {
                     gameOver = true;    // la partita termina
                     console.log('Hai vinto!');  //  stampo in console il messaggio di vittoria
                     overlay.classList.add('overlay-win');
-                    overlay.innerHTML = `<span>Hai vinto!<br>Punteggio: ${points}</span>`;
+                    overlay.innerHTML = `<span>You win!<br>Points: ${points}</span><br><a href="http://127.0.0.1:5500/">Try again</a>`;
                     gridHtml.append(overlay);
                 }
             } else {    // altrimenti se la cella cliccata è una bomba..
                 this.classList.toggle('danger');    // coloro la cella di rosso
                 gameOver = true;    // termino la partita
                 console.log(this.querySelector('span').innerText, "Bomba!");    // stampo in console il messaggio di sconfitta a causa dell'esplosione di una bomba
+                // aggiungo un overlay che mostra il messaggio di sconfitta ed il punteggio
                 overlay.classList.add('overlay-lose');
-                overlay.innerHTML = `<span>Hai perso!<br>Punteggio: ${points}</span>`;
+                overlay.innerHTML = `<span>You lose!<br>Points: ${points}<br><a href="http://127.0.0.1:5500/">Try again</a></span>`;
                 gridHtml.append(overlay);
             }
         }
